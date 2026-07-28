@@ -1,0 +1,19 @@
+all:
+  hosts:
+    server1.adm.dosbox.local:
+      ansible_host: 10.16.64.101
+    server2.adm.dosbox.local:
+      ansible_host: 10.16.64.102
+    server3.adm.dosbox.local:
+      ansible_host: 10.16.64.103
+
+  children:
+    server1:
+      hosts:
+        server1.adm.dosbox.local: {}
+    server2:
+      hosts:
+        server2.adm.dosbox.local: {}
+    server3:
+      hosts:
+        server3.adm.dosbox.local: {}
