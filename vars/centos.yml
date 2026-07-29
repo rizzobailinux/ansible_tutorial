@@ -1,0 +1,3 @@
+# Package manager vars
+pkg_apache: "httpd"
+pkg_php: "php"

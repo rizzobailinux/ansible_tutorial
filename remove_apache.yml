@@ -4,16 +4,14 @@
   become: true
   tasks:
 
-  - name: update repository index
-    apt:
+  - name: Load OS-specific package variables
+    ansible.builtin.include_vars:
+      file: "vars/{{ ansible_distribution | lower }}.yml"
+
+  - name: Remove apache/php packages
+    ansible.builtin.package:
+      name:
+        - "{{ pkg_apache }}"
+        - "{{ pkg_php }}"
+      state: absent
       update_cache: yes
-
-  - name: install apache2 package
-    apt: 
-      name: apache2
-      state: absent
-
-  - name: add php support for apache
-    apt:
-      name: libapache2-mod-php
-      state: absent

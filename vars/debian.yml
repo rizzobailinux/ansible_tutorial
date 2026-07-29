@@ -1,0 +1,3 @@
+# Package manager vars
+pkg_apache: "apache2"
+pkg_php: "libapache2-mod-php"
