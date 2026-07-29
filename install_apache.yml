@@ -3,7 +3,6 @@
 - hosts: all
   become: true
   tasks:
-
   - name: Load OS-specific package variables
     ansible.builtin.include_vars:
       file: "vars/{{ ansible_distribution | lower }}.yml"
@@ -15,3 +14,9 @@
         - "{{ pkg_php }}"
       state: latest
       update_cache: yes
+
+  - name: Ensure Apache is started and enabled on boot
+    ansible.builtin.service:
+      name: "{{ svc_apache }}"
+      state: started
+      enabled: yes

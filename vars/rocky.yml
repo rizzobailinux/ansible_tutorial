@@ -1,3 +1,7 @@
 # Package manager vars
 pkg_apache: "httpd"
 pkg_php: "php"
+
+
+# Service manager vars
+svc_apache: "httpd"
