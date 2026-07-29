@@ -9,6 +9,8 @@ all:
       ansible_host: 10.16.64.102
     server3.adm.dosbox.local:
       ansible_host: 10.16.64.103
+    server4.adm.dosbox.local:
+      ansible_host: 10.16.64.104
 
   children:
     server1:
@@ -20,3 +22,6 @@ all:
     server3:
       hosts:
         server3.adm.dosbox.local: {}
+    server4:
+      hosts:
+        server4.adm.dosbox.local: {}
