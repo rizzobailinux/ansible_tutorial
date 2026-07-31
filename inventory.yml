@@ -13,6 +13,7 @@ all:
       ansible_host: 10.16.64.104
 
   children:
+    # Shorthand node names
     server1:
       hosts:
         server1.adm.dosbox.local: {}
@@ -25,3 +26,17 @@ all:
     server4:
       hosts:
         server4.adm.dosbox.local: {}
+
+    # Other functional groups
+    web_servers:
+      children:
+        server1: {}
+        server4: {}
+
+    db_servers:
+      children:
+        server2: {}
+
+    file_servers:
+      children:
+        server3: {}

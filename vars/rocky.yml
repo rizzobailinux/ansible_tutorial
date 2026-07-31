@@ -1,7 +1,11 @@
 # Package manager vars
 pkg_apache: "httpd"
 pkg_php: "php"
+pkg_mariadb: "mariadb"
+pkg_samba: "samba"
 
 
 # Service manager vars
 svc_apache: "httpd"
+svc_mariadb: "mariadb"
+svc_samba: "samba"

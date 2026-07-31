@@ -1,0 +1,68 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (Rocky)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ( ansible_distribution | lower ) == "rocky"
+
+  - name: install updates (Debian)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ( ansible_distribution | lower ) == "debian"
+
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: Install apache and php for Debian servers
+    ansible.builtin.apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: present
+    when: ( ansible_distribution | lower) == "debian"
+
+  - name: Install apache and php for Rocky servers
+    ansible.builtin.dnf:
+      name:
+        - httpd
+        - php
+      state: present
+    when: ( ansible_distribution | lower) == "rocky"
+
+
+- hosts: db_servers
+  become: true
+  tasks:
+
+  - name: Install mariadb for Debian servers
+    ansible.builtin.apt:
+      name:
+        - mariadb-server
+      state: present
+    when: ( ansible_distribution | lower) == "debian"
+
+  - name: Install mariadb for Rocky servers
+    ansible.builtin.dnf:
+      name:
+        - mariadb
+      state: present
+    when: ( ansible_distribution | lower) == "rocky"
+
+
+- hosts: file_servers
+  become: true
+  tasks:
+
+  - name: Install samba for file servers
+    ansible.builtin.package:
+      name:
+        - samba
+      state: present

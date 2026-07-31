@@ -1,0 +1,5 @@
+- name: Install updates safely (Rocky)
+  ansible.builtin.dnf:
+    name: "*"
+    update_only: yes
+    update_cache: yes

@@ -13,5 +13,7 @@
       name:
         - "{{ pkg_apache }}"
         - "{{ pkg_php }}"
+        - "{{ pkg_mariadb }}"
+        - "{{ pkg_samba }}"
       state: absent
       update_cache: yes

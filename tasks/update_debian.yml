@@ -1,0 +1,4 @@
+- name: Install updates safely (Debian)
+  ansible.builtin.apt:
+    upgrade: "yes"
+    update_cache: yes

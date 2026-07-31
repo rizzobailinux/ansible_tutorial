@@ -1,0 +1,69 @@
+- hosts: all
+  become: true
+  
+  pre_tasks:
+    - name: Load OS-specific package variables globally
+      ansible.builtin.include_vars:
+        file: "vars/{{ ansible_distribution | lower }}.yml"
+
+  tasks:
+    # ==========================================
+    # BLOCK 1: GLOBAL INFRASTRUCTURE UPDATES
+    # ==========================================
+    - name: Run safe system updates dynamically
+      ansible.builtin.include_tasks: "tasks/update_{{ ansible_distribution | lower }}.yml"
+
+    # ==========================================
+    # BLOCK 2: WEB SERVERS CONFIGURATION
+    # ==========================================
+    - name: Configure Web Servers Tier
+      when: inventory_hostname in groups['web_servers']
+      block:
+        - name: Install apache/php packages
+          ansible.builtin.package:
+            name:
+              - "{{ pkg_apache }}"
+              - "{{ pkg_php }}"
+            state: present
+
+        - name: Ensure Apache is started and enabled on boot
+          ansible.builtin.service:
+            name: "{{ svc_apache }}"
+            state: started
+            enabled: yes
+
+    # ==========================================
+    # BLOCK 3: DATABASE SERVERS CONFIGURATION
+    # ==========================================
+    - name: Configure Database Servers Tier
+      when: inventory_hostname in groups['db_servers']
+      block:
+        - name: Install mariadb packages
+          ansible.builtin.package:
+            name:
+              - "{{ pkg_mariadb }}"
+            state: present
+
+        - name: Ensure MariaDB is started and enabled on boot
+          ansible.builtin.service:
+            name: "{{ svc_mariadb }}"
+            state: started
+            enabled: yes
+
+    # ==========================================
+    # BLOCK 4: FILE SERVERS CONFIGURATION
+    # ==========================================
+    - name: Configure File Servers Tier
+      when: inventory_hostname in groups['file_servers']
+      block:
+        - name: Install samba packages
+          ansible.builtin.package:
+            name:
+              - "{{ pkg_samba }}"
+            state: present
+
+        - name: Ensure Samba is started and enabled on boot
+          ansible.builtin.service:
+            name: "{{ svc_samba }}"
+            state: started
+            enabled: yes
