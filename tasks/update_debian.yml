@@ -2,3 +2,8 @@
   ansible.builtin.apt:
     upgrade: "yes"
     update_cache: yes
+
+- name: Purge old cache files and dependencies (Debian)
+  ansible.builtin.apt:
+    autoremove: yes
+    autoclean: yes

@@ -3,3 +3,10 @@
     name: "*"
     update_only: yes
     update_cache: yes
+
+- name: Clean DNF cache and remove orphaned packages (Rocky)
+  ansible.builtin.dnf:
+    autoremove: yes
+  # 'clean_metadata' forces DNF to purge old repository logs
+  vars:
+    ansible_dnf_clean_metadata: yes
