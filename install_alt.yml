@@ -5,12 +5,14 @@
   pre_tasks:
 
   - name: install updates (Rocky)
+    tags: always
     dnf:
       update_only: yes
       update_cache: yes
     when: ( ansible_distribution | lower ) == "rocky"
 
   - name: install updates (Debian)
+    tags: always
     apt:
       upgrade: dist
       update_cache: yes
@@ -22,6 +24,7 @@
   tasks:
 
   - name: Install apache and php for Debian servers
+    tags: apache, apache2, debian
     ansible.builtin.apt:
       name:
         - apache2
@@ -30,6 +33,7 @@
     when: ( ansible_distribution | lower) == "debian"
 
   - name: Install apache and php for Rocky servers
+    tags: apache, rocky, httpd
     ansible.builtin.dnf:
       name:
         - httpd
@@ -43,6 +47,7 @@
   tasks:
 
   - name: Install mariadb for Debian servers
+    tags: debian, db, mariadb
     ansible.builtin.apt:
       name:
         - mariadb-server
@@ -50,6 +55,7 @@
     when: ( ansible_distribution | lower) == "debian"
 
   - name: Install mariadb for Rocky servers
+    tags: rocky, db, mariadb
     ansible.builtin.dnf:
       name:
         - mariadb
@@ -62,6 +68,7 @@
   tasks:
 
   - name: Install samba for file servers
+    tags: samba
     ansible.builtin.package:
       name:
         - samba
