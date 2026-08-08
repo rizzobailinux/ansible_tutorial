@@ -38,7 +38,15 @@
             name: "{{ svc_apache }}"
             state: started
             enabled: yes
-
+        
+        - name: Copy default html file for site
+          copy:
+            src: default_site.html
+            dest: /var/www/html/index.html
+            owner: root
+            group: root
+            mode: 0644
+        
     # ==========================================
     # BLOCK 3: DATABASE SERVERS CONFIGURATION
     # ==========================================
