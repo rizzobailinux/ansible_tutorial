@@ -3,6 +3,8 @@ all:
     ansible_python_interpreter: auto_silent
 
   hosts:
+    admin.adm.dosbox.local:
+      ansible_host: 10.16.64.100
     server1.adm.dosbox.local:
       ansible_host: 10.16.64.101
     server2.adm.dosbox.local:
@@ -14,6 +16,9 @@ all:
 
   children:
     # Shorthand node names
+    admin:
+      hosts:
+        admin.adm.dosbox.local: {}
     server1:
       hosts:
         server1.adm.dosbox.local: {}
@@ -28,6 +33,10 @@ all:
         server4.adm.dosbox.local: {}
 
     # Other functional groups
+    workstations:
+      children:
+        admin: {}
+    
     web_servers:
       children:
         server1: {}

@@ -3,6 +3,7 @@ pkg_apache: "httpd"
 pkg_php: "php"
 pkg_mariadb: "mariadb"
 pkg_samba: "samba"
+pkg_unzip: "unzip"
 
 
 # Service manager vars

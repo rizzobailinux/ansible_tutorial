@@ -1,6 +1,13 @@
 - hosts: all
   become: true
   
+
+  vars:
+    # terraform install URL
+    install_pkg_terraform: "https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip"
+
+
+
   pre_tasks:
     - name: Load OS-specific package variables globally
       ansible.builtin.include_vars:
@@ -18,7 +25,30 @@
         - always
 
     # ==========================================
-    # BLOCK 2: WEB SERVERS CONFIGURATION
+    # BLOCK 2: WORKSTATION CONFIGURATION
+    # ==========================================
+    - name: Configure Workstation packages
+      when: inventory_hostname in groups['workstations']
+      tags:
+        - workstations
+      block:
+        - name: Install unzip
+          ansible.builtin.package:
+            name:
+              - "{{ pkg_unzip }}"
+            state: present
+
+        - name: Install terraform
+          ansible.builtin.unarchive:
+            src: "{{ install_pkg_terraform }}"
+            dest: /usr/local/bin
+            remote_src: yes
+            mode: 0775
+            owner: root
+            group: root
+
+    # ==========================================
+    # BLOCK 3: WEB SERVERS CONFIGURATION
     # ==========================================
     - name: Configure Web Servers Tier
       when: inventory_hostname in groups['web_servers']
@@ -46,9 +76,9 @@
             owner: root
             group: root
             mode: 0644
-        
+    
     # ==========================================
-    # BLOCK 3: DATABASE SERVERS CONFIGURATION
+    # BLOCK 4: DATABASE SERVERS CONFIGURATION
     # ==========================================
     - name: Configure Database Servers Tier
       when: inventory_hostname in groups['db_servers']
@@ -69,7 +99,7 @@
             enabled: yes
 
     # ==========================================
-    # BLOCK 4: FILE SERVERS CONFIGURATION
+    # BLOCK 5: FILE SERVERS CONFIGURATION
     # ==========================================
     - name: Configure File Servers Tier
       when: inventory_hostname in groups['file_servers']
